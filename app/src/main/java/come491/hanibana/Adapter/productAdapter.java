@@ -22,6 +22,8 @@ import java.util.List;
 
 import come491.hanibana.Model.productModel;
 import come491.hanibana.R;
+import come491.hanibana.Screen.Category.produstList;
+import come491.hanibana.Screen.detail.product_detail;
 
 public class productAdapter extends RecyclerView.Adapter {
 
@@ -52,6 +54,14 @@ public class productAdapter extends RecyclerView.Adapter {
         Glide.with(mContext).load(product.getProductImage()).into(((UViewHolder) holder).productImage);
         ((UViewHolder) holder).productName.setText(product.getProductName());
         ((UViewHolder) holder).productPrice.setText(product.getProductPrice().toString()+" TL");
+        ((UViewHolder) holder).root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mActivity, product_detail.class);
+                i.putExtra("productId",product.getId());
+                mContext.startActivity(i);
+            }
+        });
     }
 
     @Override

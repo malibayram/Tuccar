@@ -1,18 +1,17 @@
 package come491.hanibana.Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class categoryModel {
     String id;
     String categoryName;
     String categoryImage;
-    ArrayList<productModel> products;
 
-    public categoryModel(String id, String categoryName, String categoryImage, ArrayList<productModel> products) {
+    public categoryModel(String id, String categoryName, String categoryImage) {
         this.id = id;
         this.categoryName = categoryName;
         this.categoryImage = categoryImage;
-        this.products = products;
     }
 
     public categoryModel() {
@@ -43,11 +42,5 @@ public class categoryModel {
         this.categoryImage = categoryImage;
     }
 
-    public ArrayList<productModel> getProducts() {
-        return products;
-    }
 
-    public void setProducts(ArrayList<productModel> products) {
-        this.products = products;
-    }
 }

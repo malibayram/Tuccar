@@ -3,6 +3,7 @@ package come491.hanibana.Screen.Category;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -35,16 +36,17 @@ public class produstList extends AppCompatActivity {
     private TextView catagory_name;
     //gelen kategori id si
     private String categoryId;
+    //gelen alt kategori id si
+    private String subCategoryId;
     //gelen kategori ismi
     private String catagoryName;
+    // database e erişmek için gereken referans nesnemiz
+    DatabaseReference reference;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_produst_list);
-
+    private void init() {
         // katogory sayfasından gelen katogori id si
         categoryId = getIntent().getStringExtra("categoryId");
+        subCategoryId = getIntent().getStringExtra("subCategoryId");
         catagoryName = getIntent().getStringExtra("categoryName");
         // arayüzdeki kompanente ulaşmak için id sini kullanıyoruz
         productList = findViewById(R.id.categoryList);
@@ -59,9 +61,21 @@ public class produstList extends AppCompatActivity {
 
 
         // Firebase database e baglanmak için gerekli alandan referansımızı alıyoruz
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Category")
-                .child(categoryId)
+        reference = FirebaseDatabase.getInstance().getReference()
                 .child("products");
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_produst_list);
+        init();
+        loadProdust();
+
+    }
+
+    private void loadProdust() {
         // bu aldıgımız referansa bir sürekli dinleyici atıyoruz
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,7 +87,8 @@ public class produstList extends AppCompatActivity {
                     // gelen veriyi categoryModel tipine çevirip alıyoruz
                     productModel product = snap.getValue(productModel.class);
                     // ve liste mize ekliyoruz
-                    products.add(product);
+                    if (product.getProductSubCategoryId().equals(subCategoryId))
+                        products.add(product);
                 }
                 // Recycler viev e veri göndermemiz için yarattıgımız adaptorumuzden bir nesne türetiyoruz
                 product_adapter = new productAdapter(getApplicationContext(), products, produstList.this);
@@ -87,7 +102,6 @@ public class produstList extends AppCompatActivity {
 
             }
         });
-
 
     }
 }
