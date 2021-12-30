@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaniBana">
         <activity
+            android:name=".ui.login.RegistrationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_registration" />
+        <activity
             android:name=".Screen.Category.favorite"
             android:exported="false" />
         <activity
