@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".Screen.detail.basket">
+
+    <TextView
+        android:id="@+id/basketSize"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top|center"
+        android:background="#660099"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="129dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="0dp"
+        android:padding="10dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp" />
+
+    <TextView
+        android:id="@+id/totalPriceText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center"
+        android:background="#660099"
+        android:layout_marginBottom="100dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="129dp" />
+    <Button
+        android:id="@+id/confirmBasket"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:text="confirm cart"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="129dp" />
+</FrameLayout>

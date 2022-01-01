@@ -2,17 +2,17 @@ package come491.hanibana.Screen.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,25 +22,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import come491.hanibana.Adapter.categoryAdapter;
-import come491.hanibana.Adapter.productAdapter;
+import come491.hanibana.LoginActivity;
 import come491.hanibana.Model.categoryModel;
-import come491.hanibana.Model.productModel;
 import come491.hanibana.R;
+import come491.hanibana.Screen.Category.favorite;
+import come491.hanibana.Screen.detail.basket;
+
+import androidx.appcompat.widget.Toolbar;
 
 public class home extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
 
     // ürünlerimizi yerleştirecegimiz listemiz
     private RecyclerView categoryList;
     //ürüneri listemize yerleştirmek için bize gereken adaptor sınıfımız
     private categoryAdapter category_adapter;
     // veritabanından çektigimiz verileri tutacagımız listemiz
-    private ArrayList<categoryModel> categorys = new ArrayList<>();
+    private final ArrayList<categoryModel> categorys = new ArrayList<>();
     private DatabaseReference reference;
 
-    private BottomNavigationView bottomNavigationView;
-
-    private void init(){
+    private void init() {
         // arayüzdeki kompanente ulaşmak için id sini kullanıyoruz
         categoryList = findViewById(R.id.categoryList);
 
@@ -48,19 +50,28 @@ public class home extends AppCompatActivity {
         // grit viev görümünü verebilmek için grid Layout manager ı Recycler View imize ekliyoruz
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         categoryList.setLayoutManager(llm);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        mAuth = FirebaseAuth.getInstance();
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+           switch (item.getItemId()){
+               case R.id.favorite:
+                    Intent i = new Intent(home.this, favorite.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(i);
+                    Log.d("seçilen", item.toString()+" true dondü");
+                    break;
+               default:
+                   break;
 
-                if(item.toString().equals("Favorite")){
-
-                }
-
-                Log.d("seçilen",item.toString());
-                return false;
             }
+
+            return false;
         });
         bottomNavigationView.setSelectedItemId(R.id.home);
 
@@ -73,11 +84,40 @@ public class home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
         init();
         loadCategory();
     }
 
-    private void loadCategory(){
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.miLogout) {
+            mAuth.signOut();
+
+            Intent intent = new Intent(home.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            return true;
+        }else if (item.getItemId() == R.id.basket) {
+            Intent intent = new Intent(home.this, basket.class);
+            startActivity(intent);
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void loadCategory() {
         // bu aldıgımız referansa bir sürekli dinleyici atıyoruz
         reference.addValueEventListener(new ValueEventListener() {
             @Override

@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +33,11 @@ public class product_detail extends AppCompatActivity {
 
     private DatabaseReference reference;
 
+    private FirebaseAuth mAuth;
+
+     boolean fav = false;
+
+    private boolean basket = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +57,13 @@ public class product_detail extends AppCompatActivity {
         addFavorite = findViewById(R.id.addFavorite);
         productId = getIntent().getStringExtra("productId");
         // Firebase database e baglanmak için gerekli alandan referansımızı alıyoruz
-        reference = FirebaseDatabase.getInstance().getReference("products").child(productId);
+        reference = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        Control();
     }
 
     private void loadProduct() {
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.child("products").child(productId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 productModel product = snapshot.getValue(productModel.class);
@@ -70,17 +80,54 @@ public class product_detail extends AppCompatActivity {
         });
 
     }
+    private void Control() {
+        reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Fav").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                fav = false;
+                // favorilerden gelen id ler
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    // favorilerdeki id leri bizim ürün ile kıyaslıyoruz
+                    String product = snap.getValue().toString();
+                    Log.d("productId",product);
+                    Log.d("productId",productId);
+                    if(product.equals(productId)){
+                        fav = true;
+                    }
+                }
+                if(fav){
+                    addFavorite.setText("remove favorites");
+                }else{
+                    addFavorite.setText("add favorites");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     private void addButtonListener(){
         addBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Basket").push().setValue(productId);
+                    Toast.makeText(getApplicationContext(), "product added to cart", Toast.LENGTH_SHORT).show();
             }
         });
         addFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(fav){
+                    reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Fav").child(productId).removeValue();
+                    Toast.makeText(getApplicationContext(), "product removed from favorites", Toast.LENGTH_SHORT).show();
+                }else{
+                    reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Fav").child(productId).setValue(productId);
+                    Toast.makeText(getApplicationContext(), "product added from favorites", Toast.LENGTH_SHORT).show();
+                }
+                Control();
 
             }
         });

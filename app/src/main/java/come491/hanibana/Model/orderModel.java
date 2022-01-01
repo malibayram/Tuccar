@@ -6,15 +6,20 @@ public class orderModel {
     String id;
     String purchaseDate;
     String orderNumber;
+    String customerName;
+    String customerId;
     String amount;
     String paymentType;
     String deliveryAddress;
     List<productModel> products;
 
-    public orderModel(String id, String purchaseDate, String orderNumber, String amount, String paymentType, String deliveryAddress, List<productModel> products) {
+
+    public orderModel(String id, String purchaseDate, String orderNumber, String customerName, String customerId, String amount, String paymentType, String deliveryAddress, List<productModel> products) {
         this.id = id;
         this.purchaseDate = purchaseDate;
         this.orderNumber = orderNumber;
+        this.customerName = customerName;
+        this.customerId = customerId;
         this.amount = amount;
         this.paymentType = paymentType;
         this.deliveryAddress = deliveryAddress;
@@ -78,5 +83,21 @@ public class orderModel {
 
     public void setProducts(List<productModel> products) {
         this.products = products;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }
