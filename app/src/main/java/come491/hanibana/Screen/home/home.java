@@ -2,6 +2,7 @@ package come491.hanibana.Screen.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +43,7 @@ public class home extends AppCompatActivity {
     private final ArrayList<categoryModel> categorys = new ArrayList<>();
     private DatabaseReference reference;
 
+
     private void init() {
         // arayüzdeki kompanente ulaşmak için id sini kullanıyoruz
         categoryList = findViewById(R.id.categoryList);
@@ -51,6 +53,8 @@ public class home extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         categoryList.setLayoutManager(llm);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.home);
+
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
@@ -64,16 +68,15 @@ public class home extends AppCompatActivity {
                     Intent i = new Intent(home.this, favorite.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(i);
-                    Log.d("seçilen", item.toString()+" true dondü");
-                    break;
+                   return true;
+               case R.id.home:
+                   bottomNavigationView.setSelectedItemId(R.id.home);
+                   return true;
                default:
-                   break;
+                   return false;
 
             }
-
-            return false;
         });
-        bottomNavigationView.setSelectedItemId(R.id.home);
 
         // Firebase database e baglanmak için gerekli alandan referansımızı alıyoruz
         reference = FirebaseDatabase.getInstance().getReference("Category");

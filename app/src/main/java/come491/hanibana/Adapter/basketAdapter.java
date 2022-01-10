@@ -67,6 +67,7 @@ public class basketAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 Intent i = new Intent(mActivity, product_detail.class);
                 i.putExtra("productId",product.getId());
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(i);
             }
         });

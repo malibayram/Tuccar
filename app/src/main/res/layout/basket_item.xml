@@ -34,7 +34,8 @@
             android:padding="5dp"
             android:text="Ürün "
             android:layout_marginBottom="25dp"
-            android:layout_gravity="center"
+            android:layout_marginLeft="170dp"
+            android:layout_gravity="left"
             android:textSize="18dp"
             />
 
@@ -44,8 +45,10 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textColor="@color/black"
+            android:layout_marginTop="25dp"
             android:text="200 tl"
-            android:layout_gravity="center"
+            android:layout_marginLeft="170dp"
+            android:layout_gravity="left"
             />
         <ImageButton
             android:id="@+id/remove"

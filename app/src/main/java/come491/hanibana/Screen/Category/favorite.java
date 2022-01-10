@@ -55,6 +55,7 @@ public class favorite extends AppCompatActivity {
         GridLayoutManager gm = new GridLayoutManager(getApplicationContext(), 2);
         productList.setLayoutManager(gm);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.favorite);
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
@@ -66,13 +67,16 @@ public class favorite extends AppCompatActivity {
                     Intent i = new Intent(favorite.this, home.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(i);
-                    break;
+                    return true;
+                case R.id.favorite:
+                    bottomNavigationView.setSelectedItemId(R.id.favorite);
+                    return false;
                 default:
-                    break;
+                    return false;
 
             }
 
-            return false;
+
         });
 
 

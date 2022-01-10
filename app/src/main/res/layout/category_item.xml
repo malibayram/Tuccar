@@ -18,7 +18,7 @@
 
         <ImageView
             android:id="@+id/categoryImage"
-            android:layout_width="250dp"
+            android:layout_width="230dp"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars" />

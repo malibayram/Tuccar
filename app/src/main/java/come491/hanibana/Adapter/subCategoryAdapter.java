@@ -60,6 +60,8 @@ public class subCategoryAdapter extends RecyclerView.Adapter {
                 i.putExtra("subCategoryId",category.getId());
                 i.putExtra("categoryId",category.getTopCategoryid());
                 i.putExtra("categoryName",category.getSubCategoryName());
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 mContext.startActivity(i);
 
             }
