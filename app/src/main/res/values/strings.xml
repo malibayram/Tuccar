@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hani Bana</string>
+    <string name="app_name">TÜCCAR</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
