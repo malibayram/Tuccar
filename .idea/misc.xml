@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.3157749185106164" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/category_item.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.48020833333333335" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.48020833333333335" />
       </map>

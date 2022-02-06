@@ -26,8 +26,8 @@ import come491.hanibana.R;
 
 public class product_detail extends AppCompatActivity {
     private ImageView productImage;
-    private TextView productName,productPrice,productDes;
-    private Button addBasket,addFavorite;
+    private TextView productName, productPrice, productDes;
+    private Button addBasket, addFavorite;
 
     private String productId;
 
@@ -35,9 +35,12 @@ public class product_detail extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-     boolean fav = false;
+    boolean fav = false;
+
+    boolean inBasket = false;
 
     private boolean basket = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,7 @@ public class product_detail extends AppCompatActivity {
     }
 
 
-    private void init(){
+    private void init() {
         productImage = findViewById(R.id.productImage);
         productName = findViewById(R.id.productName);
         productPrice = findViewById(R.id.productPrice);
@@ -69,7 +72,7 @@ public class product_detail extends AppCompatActivity {
                 productModel product = snapshot.getValue(productModel.class);
                 Glide.with(getApplicationContext()).load(product.getProductImage()).into(productImage);
                 productName.setText(product.getProductName());
-                productPrice.setText(product.getProductPrice().toString()+" TL");
+                productPrice.setText(product.getProductPrice().toString() + " TL");
                 productDes.setText(product.getProductDescription());
             }
 
@@ -80,6 +83,7 @@ public class product_detail extends AppCompatActivity {
         });
 
     }
+
     private void Control() {
         reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Fav").addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,16 +93,43 @@ public class product_detail extends AppCompatActivity {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     // favorilerdeki id leri bizim ürün ile kıyaslıyoruz
                     String product = snap.getValue().toString();
-                    Log.d("productId",product);
-                    Log.d("productId",productId);
-                    if(product.equals(productId)){
+                    Log.d("productId", product);
+                    Log.d("productId", productId);
+                    if (product.equals(productId)) {
                         fav = true;
                     }
                 }
-                if(fav){
+                if (fav) {
                     addFavorite.setText("remove favorites");
-                }else{
+                } else {
                     addFavorite.setText("add favorites");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Basket").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                inBasket = false;
+                // favorilerden gelen id ler
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    // favorilerdeki id leri bizim ürün ile kıyaslıyoruz
+                    String product = snap.getValue().toString();
+                    Log.d("productId", product);
+                    Log.d("productId", productId);
+                    if (product.equals(productId)) {
+                        inBasket = true;
+                    }
+                }
+                if (inBasket) {
+                    addBasket.setText("remove from basket");
+                } else {
+                    addBasket.setText("add basket");
                 }
             }
 
@@ -109,26 +140,32 @@ public class product_detail extends AppCompatActivity {
         });
     }
 
-    private void addButtonListener(){
+    private void addButtonListener() {
         addBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Basket").push().setValue(productId);
+                if (inBasket) {
+                    reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Basket").child(productId).removeValue();
+                    Toast.makeText(getApplicationContext(), "product removed from cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Basket").child(productId).setValue(productId);
                     Toast.makeText(getApplicationContext(), "product added to cart", Toast.LENGTH_SHORT).show();
+                }
+                Control();
+
             }
         });
         addFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(fav){
+                if (fav) {
                     reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Fav").child(productId).removeValue();
                     Toast.makeText(getApplicationContext(), "product removed from favorites", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Fav").child(productId).setValue(productId);
                     Toast.makeText(getApplicationContext(), "product added from favorites", Toast.LENGTH_SHORT).show();
                 }
                 Control();
-
             }
         });
 
