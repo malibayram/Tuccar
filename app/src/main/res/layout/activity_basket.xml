@@ -13,8 +13,8 @@
         android:layout_gravity="top|center"
         android:background="#660099"
         android:gravity="center"
-        android:textSize="20dp"
         android:text="TextView"
+        android:textSize="20dp"
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="129dp" />
 
@@ -29,18 +29,20 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp" />
 
+
     <TextView
         android:id="@+id/totalPriceText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom|center"
-        android:background="#660099"
         android:layout_marginBottom="100dp"
+        android:background="#660099"
         android:gravity="center"
-        android:textSize="20dp"
         android:text="TextView"
+        android:textSize="20dp"
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="129dp" />
+
     <Button
         android:id="@+id/confirmBasket"
         android:layout_width="match_parent"
@@ -48,8 +50,8 @@
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:textSize="18dp"
         android:text="confirm cart"
+        android:textSize="18dp"
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="129dp" />
 </FrameLayout>

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import come491.hanibana.Adapter.categoryAdapter;
 import come491.hanibana.LoginActivity;
 import come491.hanibana.Model.categoryModel;
+import come491.hanibana.ProfileActivity;
 import come491.hanibana.R;
 import come491.hanibana.Screen.Category.favorite;
 import come491.hanibana.Screen.detail.basket;
@@ -63,17 +64,25 @@ public class home extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         bottomNavigationView.setOnItemSelectedListener(item -> {
-           switch (item.getItemId()){
-               case R.id.favorite:
+            switch (item.getItemId()) {
+                case R.id.favorite:
                     Intent i = new Intent(home.this, favorite.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(i);
-                   return true;
-               case R.id.home:
-                   bottomNavigationView.setSelectedItemId(R.id.home);
-                   return true;
-               default:
-                   return false;
+                    return true;
+
+                case R.id.home:
+                    // bottomNavigationView.setSelectedItemId(R.id.home);
+                    return false;
+
+                case R.id.person:
+                    Intent intent = new Intent(home.this, ProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(intent);
+                    return true;
+
+                default:
+                    return false;
 
             }
         });
@@ -111,7 +120,7 @@ public class home extends AppCompatActivity {
             startActivity(intent);
 
             return true;
-        }else if (item.getItemId() == R.id.basket) {
+        } else if (item.getItemId() == R.id.basket) {
             Intent intent = new Intent(home.this, basket.class);
             startActivity(intent);
 
@@ -137,7 +146,7 @@ public class home extends AppCompatActivity {
                 }
                 // Recycler viev e veri göndermemiz için yarattıgımız adaptorumuzden bir nesne türetiyoruz
                 category_adapter = new categoryAdapter(getApplicationContext(), categorys, home.this);
-                //ardından bu nesneyi Recycler viev  e veriyoruzz
+                // ardından bu nesneyi Recycler viev e veriyoruzz
                 categoryList.setAdapter(category_adapter);
 
             }

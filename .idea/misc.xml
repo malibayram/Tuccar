@@ -29,10 +29,13 @@
         <entry key="app/src/main/res/drawable/ic_logout.xml" value="0.4305555555555556" />
         <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.2817938420348059" />
         <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.2906420765027322" />
-        <entry key="app/src/main/res/layout/activity_favorite.xml" value="0.48020833333333335" />
+        <entry key="app/src/main/res/layout/activity_basket.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_favorite.xml" value="0.23399403889973958" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.3157749185106164" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.2810226440429688" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_sub_category.xml" value="0.21354166666666666" />
         <entry key="app/src/main/res/layout/category_item.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.48020833333333335" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.48020833333333335" />

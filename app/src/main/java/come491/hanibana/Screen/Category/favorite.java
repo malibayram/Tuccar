@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import come491.hanibana.Adapter.productAdapter;
 import come491.hanibana.LoginActivity;
 import come491.hanibana.Model.productModel;
+import come491.hanibana.ProfileActivity;
 import come491.hanibana.R;
 import come491.hanibana.Screen.detail.basket;
 import come491.hanibana.Screen.home.home;
@@ -45,6 +46,7 @@ public class favorite extends AppCompatActivity {
 
     // ekrana bos mesajı vermek için text ekliyoruz
     private TextView eempty;
+
     private void init() {
         // arayüzdeki kompanente ulaşmak için id sini kullanıyoruz
         productList = findViewById(R.id.categoryList);
@@ -62,15 +64,22 @@ public class favorite extends AppCompatActivity {
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.home:
                     Intent i = new Intent(favorite.this, home.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     getApplicationContext().startActivity(i);
                     return true;
+
                 case R.id.favorite:
-                    bottomNavigationView.setSelectedItemId(R.id.favorite);
+                    // bottomNavigationView.setSelectedItemId(R.id.favorite);
                     return false;
+
+                case R.id.person:
+                    Intent intent = new Intent(favorite.this, ProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(intent);
+                    return true;
                 default:
                     return false;
 
@@ -83,6 +92,7 @@ public class favorite extends AppCompatActivity {
         // Firebase database e baglanmak için gerekli alandan referansımızı alıyoruz
         reference = FirebaseDatabase.getInstance().getReference();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +100,7 @@ public class favorite extends AppCompatActivity {
         init();
         getFav();
     }
+
     private void getFav() {
         // bu aldıgımız referansa bir sürekli dinleyici atıyoruz
         reference.child("users").child(mAuth.getCurrentUser().getUid()).child("Fav").addValueEventListener(new ValueEventListener() {
@@ -104,11 +115,11 @@ public class favorite extends AppCompatActivity {
                     // ve liste mize ekliyoruz
                     favoriId.add(product);
                 }
-                if(favoriId.isEmpty())
+                if (favoriId.isEmpty())
                     eempty.setText("Favorites are empty");
                 else
                     eempty.setText("");
-                Log.d("veri",favoriId.toString());
+                Log.d("veri", favoriId.toString());
                 loadFav();
 
             }
@@ -120,6 +131,7 @@ public class favorite extends AppCompatActivity {
         });
 
     }
+
     private void loadFav() {
         // bu aldıgımız referansa bir sürekli dinleyici atıyoruz
         reference.child("products").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -135,7 +147,7 @@ public class favorite extends AppCompatActivity {
                     if (favoriId.contains(product.getId()))
                         favorites.add(product);
                 }
-                Log.d("veri2",favorites.toString());
+                Log.d("veri2", favorites.toString());
                 // Recycler viev e veri göndermemiz için yarattıgımız adaptorumuzden bir nesne türetiyoruz
                 product_adapter = new productAdapter(getApplicationContext(), favorites, favorite.this);
                 //ardından bu nesneyi Recycler viev  e veriyoruzz
@@ -169,7 +181,7 @@ public class favorite extends AppCompatActivity {
             startActivity(intent);
 
             return true;
-        }else if (item.getItemId() == R.id.basket) {
+        } else if (item.getItemId() == R.id.basket) {
             Intent intent = new Intent(favorite.this, basket.class);
             startActivity(intent);
 

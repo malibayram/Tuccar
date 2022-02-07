@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -75,6 +76,10 @@ public class RegisterActivity extends AppCompatActivity {
                         FirebaseUser currentUser = mAuth.getCurrentUser();
 
                         assert currentUser != null;
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(name).build();
+
+                        currentUser.updateProfile(profileUpdates);
 
                         Map<String, String> user = new HashMap<>();
                         user.put("'email'", email);
